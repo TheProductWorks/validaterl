@@ -22,7 +22,7 @@ validate(Plan) ->
                  end,
                  [ {Name, Value, Spec, validate(Value, Spec)} ||
                      {Name, Value, Spec} <- Plan ]).
-    
+
 
 %% numericality
 validate(undefined, #numericality{
@@ -208,6 +208,8 @@ validate(A, #type{ is = pid }) when is_pid(A) ->
 validate(A, #type{ is = tuple }) when is_tuple(A) ->
     true;
 validate(A, #type{ is = list }) when is_list(A) ->
+    true;
+validate(A, #type{ is = map }) when is_map(A) ->
     true;
 validate(_, #type{}) ->
     false;
@@ -474,9 +476,10 @@ type_test() ->
     ?assert(validate({}, #type{ is = tuple })),
     ?assert(validate([], #type{ is = list })),
     ?assert(validate(true, #type{ is = boolean })),
-    ?assert(validate(false, #type{ is = boolean })).
-    
-    
-    
+    ?assert(validate(false, #type{ is = boolean })),
+    ?assert(validate(#{}, #type{ is = map })).
+
+
+
 
 -endif.
